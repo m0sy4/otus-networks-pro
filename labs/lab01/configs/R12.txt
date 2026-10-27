@@ -1,7 +1,9 @@
 R12#show running-config
 Building configuration...
 
-Current configuration : 1168 bytes
+Current configuration : 1584 bytes
+!
+! Last configuration change at 18:42:45 UTC Tue Oct 27 2026
 !
 version 15.4
 service timestamps debug datetime msec
@@ -66,12 +68,22 @@ interface Loopback0
  ip address 10.255.0.12 255.255.255.255
 !
 interface Ethernet0/0
+ description TRUNK_TO_SW4_E1/0
  no ip address
- shutdown
+!
+interface Ethernet0/0.101
+ description GW_VPC1_VLAN101
+ encapsulation dot1Q 101
+ ip address 10.100.1.1 255.255.255.0
+!
+interface Ethernet0/0.199
+ description GW_MGMT_VLAN199
+ encapsulation dot1Q 199
+ ip address 10.100.99.1 255.255.255.0
 !
 interface Ethernet0/1
- no ip address
- shutdown
+ description TO_R13_E0/1_VIA_VLAN901
+ ip address 10.0.0.93 255.255.255.252
 !
 interface Ethernet0/2
  description TO_R14_E0/0
@@ -102,6 +114,7 @@ ip forward-protocol nd
 !
 no ip http server
 no ip http secure-server
+ip route 10.100.2.0 255.255.255.0 10.0.0.94
 !
 !
 !
