@@ -1,9 +1,9 @@
 R16#show running-config
 Building configuration...
 
-Current configuration : 1035 bytes
+Current configuration : 1389 bytes
 !
-! Last configuration change at 16:54:45 UTC Fri Oct 23 2026
+! Last configuration change at 19:46:32 UTC Wed Oct 28 2026
 !
 version 15.4
 service timestamps debug datetime msec
@@ -23,61 +23,38 @@ no mmi auto-configure
 no mmi pvc
 mmi snmp-timeout 180
 !
-!
-!
-!
-!
-!
-!
-!
-
-
-!
-!
-!
-!
 no ip domain lookup
 ip cef
 no ipv6 cef
 !
 multilink bundle-name authenticated
 !
-!
-!
-!
-!
-!
-!
-!
-!
 redundancy
-!
-!
-! 
-!
-!
-!
-!
-!
-!
-!
-!
-!
 !
 interface Loopback0
  ip address 10.255.0.16 255.255.255.255
 !
 interface Ethernet0/0
+ description TRUNK_TO_SW10_E0/3
  no ip address
- shutdown
+!
+interface Ethernet0/0.202
+ description GW_VPC_VLAN202
+ encapsulation dot1Q 202
+ ip address 10.200.2.1 255.255.255.0
+!
+interface Ethernet0/0.299
+ description GW_MGMT_VLAN299
+ encapsulation dot1Q 299
+ ip address 10.200.99.1 255.255.255.0
 !
 interface Ethernet0/1
  description TO_R18_E0/0
  ip address 10.0.0.17 255.255.255.252
 !
 interface Ethernet0/2
- no ip address
- shutdown
+ description TO_R17_E0/2_VIA_VLAN902
+ ip address 10.0.0.97 255.255.255.252
 !
 interface Ethernet0/3
  description TO_R32_E0/0
@@ -85,21 +62,11 @@ interface Ethernet0/3
 !
 ip forward-protocol nd
 !
-!
 no ip http server
 no ip http secure-server
-!
-!
-!
+ip route 10.200.1.0 255.255.255.0 10.0.0.98
 !
 control-plane
-!
-!
-!
-!
-!
-!
-!
 !
 line con 0
  logging synchronous
@@ -107,6 +74,5 @@ line aux 0
 line vty 0 4
  login
  transport input none
-!
 !
 end
